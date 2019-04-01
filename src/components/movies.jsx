@@ -31,9 +31,9 @@ class Movies extends Component {
             {this.state.movies.map(movie => (
               <tr key={movie._id}>
                 <td>{movie.title}</td>
-                <td>{movie.Genre}</td>
-                <td>{movie.Stock}</td>
-                <td>{movie.Rate}</td>
+                <td>{movie.genre.name}</td>
+                <td>{movie.numberInStock}</td>
+                <td>{movie.dailyRentalRate}</td>
                 <td>
                   <button
                     onClick={() => this.handleDelete(movie)}
