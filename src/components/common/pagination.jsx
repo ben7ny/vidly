@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types"; // add-on to check the props types
 import _ from "lodash"; // kind of optimized underscore.js library that make js methods simpler(usully used with _)
 
 const Pagination = props => {
@@ -25,6 +26,13 @@ const Pagination = props => {
       </ul>
     </nav>
   );
+};
+// the first porpTypes is different than the one is exported, so has to be camelCase
+Pagination.propTypes = {
+  itemsCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired
 };
 
 export default Pagination;

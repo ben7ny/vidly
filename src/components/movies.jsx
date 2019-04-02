@@ -32,7 +32,7 @@ class Movies extends Component {
   render() {
     const { length: count } = this.state.movies;
     const { pageSize, currentPage, movies } = this.state;
-    const moviesOnPage = paginate(movies, currentPage, pageSize);
+    const moviesOnPage = paginate(movies, currentPage, pageSize); //need a new array, so we use the paginate func
     if (count === 0) return <p>There is no movie</p>;
     return (
       <>
