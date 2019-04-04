@@ -6,7 +6,7 @@ const Pagination = props => {
   // [1 ... pageCount].map() maping each page number to a <li></li>
   const { itemsCount, pageSize, onPageChange, currentPage } = props;
   console.log(currentPage);
-  const pageCount = itemsCount / pageSize;
+  const pageCount = Math.ceil(itemsCount / pageSize);
   if (pageCount === 1) return null; // don't render single page
   const pages = _.range(1, pageCount + 1); // the range method don't go to the last one, so add + 1
 
