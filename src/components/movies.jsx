@@ -48,14 +48,8 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleSort = path => {
-    const sortColumn = { ...this.state.sortColumn };
-    if (sortColumn.path === path)
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
+  handleSort = sortColumn => {
+    // moved it to the moviesTable
     // asc means ascending order from lodash library
     // this.setState({ sortColumn: { path, order: "asc" } });
     this.setState({ sortColumn });
@@ -84,8 +78,8 @@ class Movies extends Component {
       <div className="row">
         <div className="col-3">
           <ListGroup
-            items={this.state.genres}
             selectedItem={selectedGenre} // use names that are related to what happening and meaningful
+            items={this.state.genres}
             onItemSelect={this.handleItemSelect}
           />
         </div>
@@ -93,6 +87,7 @@ class Movies extends Component {
           <p>You got {filtered.length} on this page</p>
           <MoviesTable
             moviesOnPage={moviesOnPage}
+            sortColumn={sortColumn}
             onLike={this.handleLike}
             onDelete={this.handleDelete}
             onSort={this.handleSort}
