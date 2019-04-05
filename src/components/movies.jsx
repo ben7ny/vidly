@@ -1,24 +1,26 @@
 import React, { Component } from "react";
-import Like from "./common/like";
+import MoviesTable from "./moviesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
+import _ from "lodash";
 
 class Movies extends Component {
   state = {
     movies: [], // has to be set to an empty array until it get filled after get the data from componentDidMount
     genres: [],
-    selectedGenre: "",
     pageSize: 4,
-    currentPage: 1
+    currentPage: 1,
+    sortColumn: { path: "title", order: "asc" }
   };
 
   // the methods order is alphabetical
 
   componentDidMount() {
-    const genres = [{ name: "All Genres" }, ...getGenres()];
+    // does not need a id because is not a real genre (no key you would have problem even when  you check at filtered)
+    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres });
   }
 
@@ -28,6 +30,9 @@ class Movies extends Component {
   };
 
   handleItemSelect = genre => {
+    // whenever using filter set everything to 1 otherwise nothing would show after going back to the page
+    // there is no need to initialize every property(selectedGenre), and you can add a new object to state in setState
+
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
@@ -40,20 +45,41 @@ class Movies extends Component {
   };
 
   handlePageChange = page => {
-    console.log(page);
     this.setState({ currentPage: page });
+  };
+
+  handleSort = path => {
+    const sortColumn = { ...this.state.sortColumn };
+    if (sortColumn.path === path)
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    // asc means ascending order from lodash library
+    // this.setState({ sortColumn: { path, order: "asc" } });
+    this.setState({ sortColumn });
   };
 
   render() {
     const { length: count } = this.state.movies;
-    const { pageSize, currentPage, movies, selectedGenre } = this.state;
-    // apply the genre filter before the pagination
+    const {
+      pageSize,
+      currentPage,
+      movies,
+      selectedGenre,
+      sortColumn
+    } = this.state;
+    // apply the genre filter before the sorting and then the pagination in this order
     const filtered =
       selectedGenre && selectedGenre._id
         ? movies.filter(m => m.genre._id === selectedGenre._id)
         : movies;
-    const moviesOnPage = paginate(filtered, currentPage, pageSize); //need a new array, so use the paginate func
+    // the second argument is array where you can store multi columns properties, and the third is the order(asc)
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+    const moviesOnPage = paginate(sorted, currentPage, pageSize); //need a new array, so use the paginate func
     if (count === 0) return <p>There is no movie</p>;
+
     return (
       <div className="row">
         <div className="col-3">
@@ -65,43 +91,12 @@ class Movies extends Component {
         </div>
         <div className="col">
           <p>You got {filtered.length} on this page</p>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Genre</th>
-                <th>Stock</th>
-                <th>Rate</th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {moviesOnPage.map(movie => (
-                <tr key={movie._id}>
-                  <td>{movie.title}</td>
-                  <td>{movie.genre.name}</td>
-                  <td>{movie.numberInStock}</td>
-                  <td>{movie.dailyRentalRate}</td>
-                  <td>
-                    <Like
-                      liked={movie.liked}
-                      onClick={() => this.handleLike(movie)}
-                    />
-                  </td>
-
-                  <td>
-                    <button
-                      onClick={() => this.handleDelete(movie)}
-                      className="btn btn-danger btn-sm"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <MoviesTable
+            moviesOnPage={moviesOnPage}
+            onLike={this.handleLike}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
           <Pagination
             itemsCount={filtered.length}
             pageSize={pageSize}

@@ -16,7 +16,7 @@ const ListGroup = props => {
           className={
             selectedItem === item ? "list-group-item active" : "list-group-item"
           }
-          key={item[valueProperty] || index} // had to use otherwise does not bypass All Genres without key: _id
+          key={item[valueProperty]} // had to use otherwise does not bypass All Genres without key: _id or pass  _id = "" string
         >
           {item[textProperty]}
         </li>
