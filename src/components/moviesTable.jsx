@@ -1,34 +1,29 @@
 import React, { Component } from "react";
 import Like from "./common/like";
-
+import TableHeader from "./common/tableHeader";
 class MoviesTable extends Component {
-  // moved the whole sorting code hrer, so if you want a different movie page you don't need to copy the whole thing again
-  raiseSort = path => {
-    const sortColumn = { ...this.props.sortColumn };
-    if (sortColumn.path === path)
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-    this.props.onSort(sortColumn);
-  };
+  // if the array does not change, does not need to be inside a state
+  // for like and delete used altrnative key
+  columns = [
+    { path: "title", lable: "Title" },
+    { path: "genre.name", lable: "Genre" },
+    { path: "numberInStock", lable: "Stock" },
+    { path: "dailyRentalRate", lable: "Rate" },
+    { key: "like" },
+    { key: "delete" }
+  ];
 
   render() {
     // it is cleaner code to have moviesTable component and keep the code neat in the movies component
-    const { moviesOnPage, onDelete, onLike } = this.props;
+    const { moviesOnPage, onDelete, onLike, onSort, sortColumn } = this.props;
+
     return (
       <table className="table">
-        <thead>
-          <tr>
-            <th onClick={() => this.raiseSort("title")}>Title</th>
-            <th onClick={() => this.raiseSort("genre.name")}>Genre</th>
-            <th onClick={() => this.raiseSort("numberInStock")}>Stock</th>
-            <th onClick={() => this.raiseSort("dailyRentalRate")}>Rate</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
+        <TableHeader
+          columns={this.columns}
+          onSort={onSort}
+          sortColumn={sortColumn}
+        />
         <tbody>
           {moviesOnPage.map(movie => (
             <tr key={movie._id}>

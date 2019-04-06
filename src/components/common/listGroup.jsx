@@ -12,6 +12,7 @@ const ListGroup = props => {
     <ul className="list-group">
       {items.map((item, index) => (
         <li
+          style={{ cursor: "pointer" }}
           onClick={() => onItemSelect(item)}
           className={
             selectedItem === item ? "list-group-item active" : "list-group-item"
