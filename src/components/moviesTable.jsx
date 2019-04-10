@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Table from "./common/table";
 import Like from "./common/like";
 
@@ -9,7 +10,11 @@ class MoviesTable extends Component {
   // we can pass like component as value <Like liked={movie.liked} onClick={() => onLike(movie)} />
   // but in order to work we have to pass it as function, add this.props to event lestener
   columns = [
-    { path: "title", lable: "Title" },
+    {
+      path: "title",
+      lable: "Title",
+      content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link> // we add content to use it as link, also use $ to make the value dynamic when you use `` litral
+    },
     { path: "genre.name", lable: "Genre" },
     { path: "numberInStock", lable: "Stock" },
     { path: "dailyRentalRate", lable: "Rate" },
