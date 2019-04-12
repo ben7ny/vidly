@@ -28,6 +28,11 @@ class LoginForm extends Component {
       if (value.trim() === "") return "Username is required";
       // you can add more conditions like if is lass than 8 chactors
     }
+
+    if (name === "password") {
+      if (value.trim() === "") return "Password is required";
+      // you can add more conditions like if is lass than 8 chactors
+    }
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -38,7 +43,7 @@ class LoginForm extends Component {
 
     const account = { ...this.state.account };
     account[input.name] = input.value; // use this to listen to the targeted element and get the value, set then names in forms
-    this.setState({ account });
+    this.setState({ account, errors });
   };
 
   handleSubmit = e => {
