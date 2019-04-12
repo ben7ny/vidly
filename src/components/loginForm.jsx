@@ -52,17 +52,6 @@ class LoginForm extends Component {
   // we have two validator: one(validate) that validate the whole form
   // and the validateProperty that validate each box(user or password individually)
   validateProperty = ({ value, name }) => {
-<<<<<<< HEAD
-    if (name === "username") {
-      if (value.trim() === "") return "Username is required";
-      // you can add more conditions like if is lass than 8 chactors
-    }
-
-    if (name === "password") {
-      if (value.trim() === "") return "Password is required";
-      // you can add more conditions like if is lass than 8 chactors
-    }
-=======
     // we can't use Joi.validate(this.state.account, this.schema), it would effect the whole form
     // and the schema start yelling for all intries errors (empty string, has to be 8 charactors, ...)/
     // jbecause our obj compere to schama is laking a lot of properties, so use sub schema
@@ -86,7 +75,6 @@ class LoginForm extends Component {
     //   if (value.trim() === "") return "Password is required";
     //   // you can add more conditions like if is lass than 8 chactors
     // }
->>>>>>> joi_form_validation
   };
 
   handleChange = ({ currentTarget: input }) => {
