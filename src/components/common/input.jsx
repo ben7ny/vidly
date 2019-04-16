@@ -1,19 +1,4 @@
 import React from "react";
-// look at the interface { name, label, value, onChange }
-// const Input = ({ name, label, value, onChange, error, type }) => {
-//   return (
-//     <div className="form-group">
-//       <label htmlFor={name}>{label}</label>
-//       <input
-//         onChange={onChange}
-//         value={value}
-//         name={name}
-//         id={name}
-//         type={type}
-//         className="form-control"
-//       />
-
-// you can use spread and rest operator to pass the default props(value, onChange, and type) instead of repeating
 
 const Input = ({ name, label, error, ...rest }) => {
   return (

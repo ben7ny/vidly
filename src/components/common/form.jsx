@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./input";
+import Select from "./select";
 import Joi from "joi-browser";
 // don't need a render method because it not rendering anything
 // brought all usable methods here
@@ -48,9 +49,6 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  // using functions in class no need for function keyword and ; in the end
-  // unlike the top method that are assiend to a var
-
   renderButton(label) {
     return (
       <button className="btn btn-primary" disabled={this.validate()}>
@@ -62,20 +60,25 @@ class Form extends Component {
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
     return (
-      // <Input
-      //     name="username"
-      //     value={data.username}
-      //     label="Username"
-      //     onChange={this.handleChange}
-      //     error={errors.username}
-      //   />
-      // changing the every thing to name and making it dynamic {data.username} to {data[name]}
-
       <Input
         type={type}
         name={name}
         value={data[name]}
         label={label}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderSelect(name, label, options) {
+    const { data, errors } = this.state;
+    return (
+      <Select
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
         onChange={this.handleChange}
         error={errors[name]}
       />
